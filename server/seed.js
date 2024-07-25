@@ -115,5 +115,4 @@ const seed = async (tableName) => {
     }
 };
 
-// seed("FILL IN HERE");
-seed("kw_project_info");
+seed("FILL IN HERE");
