@@ -30,12 +30,6 @@ const IntroMessage = () => {
                     implementation. Use Chakra for your UI components and Axios
                     for data fetching.
                 </Text>
-                <Text as="p">
-                    You're also expected to implement alphabetical sorting of
-                    the "Project Name" column. When the header is clicked, the
-                    data should be sorted alphabetically (ascending a-z), and
-                    when clicked again it should revert to it's original order.
-                </Text>
                 <Text
                     as="p"
                     display={"inline"}
