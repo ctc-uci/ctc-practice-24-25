@@ -96,7 +96,7 @@ const seed = async (tableName) => {
         await db.query("BEGIN");
 
         for (const project of PROJECT_INFO) {
-            db.query(
+            await db.query(
                 `INSERT INTO ${tableName} (npo_id, start_year, end_year, project_leads) VALUES ($1, $2, $3, $4);`,
                 [
                     project.npoId,
