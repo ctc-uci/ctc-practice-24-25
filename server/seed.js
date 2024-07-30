@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+/* eslint no-await-in-loop: 0 */
 const pgp = require("pg-promise")({});
 require("dotenv").config();
 
@@ -115,4 +117,4 @@ const seed = async (tableName) => {
     }
 };
 
-seed("FILL IN HERE");
+seed("sk_project_info");
