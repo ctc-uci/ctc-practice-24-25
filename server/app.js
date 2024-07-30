@@ -24,8 +24,6 @@ app.use(
     })
 );
 
-app.use(cookieParser());
-
 app.use(express.json()); // for req.body
 app.use("/projects", projectInfoRouter);
 
