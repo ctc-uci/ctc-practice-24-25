@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
     Box,
     Table,
@@ -20,13 +20,31 @@ const Backend = axios.create({
     withCredentials: true,
 });
 
-const App = () => {
-    const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
-    };
+const tableCaption = "CTC NPO Information";
+const tableHeaders = [
+    { key: "npoName", text: "NPO Name" },
+    { key: "npoDescription", text: "NPO Description" },
+    { key: "startYear", text: "Start Year" },
+    { key: "endYear", text: "End Year" },
+    { key: "projectLeads", text: "Project Leads" },
+];
 
-    getData();
+const generateTableHeaders = (headers) => {
+    return headers.map((header) => {
+        return <Th key={header.key}>{header.text}</Th>;
+    });
+};
+
+const App = () => {
+    const [npoData, setNpoData] = useState([]);
+    const getData = async () => {
+        const data = await Backend.get("/projects/npo");
+        setNpoData(data.data);
+    };
+    useEffect(() => {
+        getData();
+        console.log(npoData);
+    });
 
     return (
         <Box
@@ -39,39 +57,24 @@ const App = () => {
 
             <TableContainer>
                 <Table variant="simple">
-                    <TableCaption>
-                        Imperial to metric conversion factors
-                    </TableCaption>
+                    <TableCaption>{tableCaption}</TableCaption>
                     <Thead>
-                        <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
-                        </Tr>
+                        <Tr>{generateTableHeaders(tableHeaders)}</Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>inches</Td>
-                            <Td>millimetres (mm)</Td>
-                            <Td isNumeric>25.4</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>feet</Td>
-                            <Td>centimetres (cm)</Td>
-                            <Td isNumeric>30.48</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>yards</Td>
-                            <Td>metres (m)</Td>
-                            <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        {npoData &&
+                            npoData.map((item, index) => (
+                                <Tr key={index}>
+                                    <Td>{item.name}</Td>
+                                    <Td>{item.description}</Td>
+                                    <Td>{item.startYear}</Td>
+                                    <Td>{item.endYear}</Td>
+                                    <Td>{item.projectLeads.join(", ")}</Td>
+                                </Tr>
+                            ))}
                     </Tbody>
                     <Tfoot>
-                        <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
-                        </Tr>
+                        <Tr>{generateTableHeaders(tableHeaders)}</Tr>
                     </Tfoot>
                 </Table>
             </TableContainer>
