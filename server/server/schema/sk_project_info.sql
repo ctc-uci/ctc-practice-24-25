@@ -1,8 +1,10 @@
-DROP TABLE IF EXISTS sk_project_info CASCADE;
+DROP SEQUENCE IF EXISTS project_id_seq;
 
 CREATE SEQUENCE project_id_seq
 INCREMENT 1
 START 1;
+
+DROP TABLE IF EXISTS sk_project_info CASCADE;
 
 CREATE TABLE IF NOT EXISTS sk_project_info
 (
