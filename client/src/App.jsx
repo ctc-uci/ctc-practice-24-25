@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Table,
@@ -21,12 +21,18 @@ const Backend = axios.create({
 });
 
 const App = () => {
+
+    const [data, setData] = useState([]);
+
     const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
+        const npo_projects = await Backend.get(`/project/npo-projects`);
+        setData(npo_projects.data);
+        console.log(npo_projects.data);
     };
 
-    getData();
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <Box
@@ -40,39 +46,30 @@ const App = () => {
             <TableContainer>
                 <Table variant="simple">
                     <TableCaption>
-                        Imperial to metric conversion factors
+                        CTC NPO Information
                     </TableCaption>
                     <Thead>
                         <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
+                            <Th>NPO Name</Th>
+                            <Th>NPO Description</Th>
+                            <Th>Start Year</Th>
+                            <Th>End Year</Th>
+                            <Th>Project Leads</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>inches</Td>
-                            <Td>millimetres (mm)</Td>
-                            <Td isNumeric>25.4</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>feet</Td>
-                            <Td>centimetres (cm)</Td>
-                            <Td isNumeric>30.48</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>yards</Td>
-                            <Td>metres (m)</Td>
-                            <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        {
+                            data.map((row) => (
+                                <Tr key={row.id}>
+                                    <Td>{row.name}</Td>
+                                    <Td>{row.description}</Td>
+                                    <Td isNumeric>{row.startYear}</Td>
+                                    <Td isNumeric>{row.endYear}</Td>
+                                    <Td >{row.projectLeads.join(', ')}</Td>
+                                </Tr>
+                            ))
+                        }
                     </Tbody>
-                    <Tfoot>
-                        <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
-                        </Tr>
-                    </Tfoot>
                 </Table>
             </TableContainer>
         </Box>
