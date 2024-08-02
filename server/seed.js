@@ -1,3 +1,4 @@
+/* eslint-disable */
 const pgp = require("pg-promise")({});
 require("dotenv").config();
 
@@ -115,4 +116,4 @@ const seed = async (tableName) => {
     }
 };
 
-seed("FILL IN HERE");
+seed("jh_project_info");
