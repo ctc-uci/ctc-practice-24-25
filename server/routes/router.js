@@ -75,4 +75,20 @@ npoRouter.put("/:id", async (req, res) => {
     }
 });
 
+npoRouter.delete("/:id", async (req, res) => {
+    // Delete an NPO project by id
+    try {
+        const { id } = req.params;
+        const deletedEntry = await db.query(
+            `
+            DELETE FROM np_project_info WHERE id = $1 RETURNING *;
+            `,
+            [id]
+        );
+        res.status(200).send(keysToCamel(deletedEntry));
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 module.exports = npoRouter;
