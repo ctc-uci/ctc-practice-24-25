@@ -13,11 +13,13 @@ npoRouter.use(express.json());
 npoRouter.get("/", async (req, res) => {
     try {
         // Get all projects in the DB
-        const data = await db.query(`
+        const data = await db.query(
+            `
             SELECT npo_info.*, project.npo_id, project.start_year, project.end_year, project.project_leads
             FROM npo_info
             INNER JOIN np_project_info AS project ON npo_info.id=project.npo_id;
-        `);
+            `
+        );
         res.status(200).json(keysToCamel(data));
     } catch (err) {
         res.status(500).send(err.message);
@@ -30,11 +32,13 @@ npoRouter.post("/", async (req, res) => {
         const { npoId, startYear, endYear, projectLeads } = req.body;
 
         const newEntry = await db.query(
-            `INSERT INTO np_project_info (
+            `
+            INSERT INTO np_project_info (
                 npo_id, start_year, end_year, project_leads
             ) 
             VALUES ($1, $2, $3, $4)
-            RETURNING id;`,
+            RETURNING id;
+            `,
             [npoId, startYear, endYear, projectLeads]
         );
 
@@ -42,6 +46,30 @@ npoRouter.post("/", async (req, res) => {
             status: "Success",
             id: newEntry[0].id,
         });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+npoRouter.put("/:id", async (req, res) => {
+    // Update an NPO project by id
+    try {
+        const { id } = req.params;
+        const { npoId, startYear, endYear, projectLeads } = req.body;
+        const updatedEntry = await db.query(
+            `
+            UPDATE np_project_info 
+            SET
+                npo_id = COALESCE($1, npo_id),
+                start_year = COALESCE($2, start_year),
+                end_year = COALESCE($3, end_year),
+                project_leads = COALESCE($4, project_leads)
+            WHERE id = $5
+            RETURNING *;
+            `,
+            [npoId, startYear, endYear, projectLeads, id]
+        );
+        res.status(200).send(keysToCamel(updatedEntry));
     } catch (err) {
         res.status(500).send(err.message);
     }
