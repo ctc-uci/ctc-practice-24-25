@@ -31,7 +31,7 @@ app.use(
 // app.use(cookieParser());
 
 app.use(express.json()); // for req.body
-app.use("/", bmRouter); // FIXME: delete sample endpoint
+app.use("/bm", bmRouter); // FIXME: delete sample endpoint
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server listening on ${SERVER_PORT}`);
