@@ -35,4 +35,5 @@ app.use("/bm", bmRouter); // FIXME: delete sample endpoint
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server listening on ${SERVER_PORT}`);
+    console.log(process.env.NODE_ENV);
 });

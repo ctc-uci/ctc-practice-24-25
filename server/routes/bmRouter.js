@@ -2,11 +2,11 @@ const express = require("express");
 const { db } = require("../server/db-pgp");
 const { keysToCamel } = require("../common/utils");
 
-const bmRouter = express.Router();
+const npoRouter = express.Router();
 
-bmRouter.use(express.json());
+npoRouter.use(express.json());
 
-bmRouter.get('/', async (req, res) => {
+npoRouter.get('/', async (req, res) => {
     try {
         console.log("yes")
         const allNpos = await db.query(`SELECT * FROM bm_project_info;`)
