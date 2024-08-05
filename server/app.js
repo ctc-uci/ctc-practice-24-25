@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Routes
-const bmRouter = require("./routes/bmRouter"); // FIXME: delete sample router
+const npoRouter = require("./routes/npoRouter"); // FIXME: delete sample router
 
 // schedule.scheduleJob("0 0 0 0 0", () => console.log("Hello Cron Job!")); // FIXME: delete sample cronjob
 
@@ -31,7 +31,7 @@ app.use(
 // app.use(cookieParser());
 
 app.use(express.json()); // for req.body
-app.use("/bm", bmRouter); // FIXME: delete sample endpoint
+app.use("/npo", npoRouter); // FIXME: delete sample endpoint
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server listening on ${SERVER_PORT}`);
