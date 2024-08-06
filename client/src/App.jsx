@@ -23,9 +23,14 @@ const App = () => {
     const [data, setData] = useState([]);
 
     const getData = async () => {
-        const npoProjs = await Backend.get(`/project/npo-projects`);
+      try {
+        const response = await Backend.get(`/project/npo-projects`);
+        const npoProjs = response.data;
         setData(npoProjs);
         console.log(npoProjs);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
     useEffect(() => {
