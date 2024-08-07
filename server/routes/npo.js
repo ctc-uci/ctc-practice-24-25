@@ -17,10 +17,10 @@ NPORouter.get('/', async (req, res) => {
 // GET - returns NPO by id
 NPORouter.get('/:id', async (req, res) => {
     try {
-        const { npo_id } = req.params;
+        const { id } = req.params;
         const npo = await db.query(
             `SELECT * FROM npo_info WHERE id = $1;`, 
-            [npo_id]
+            [id]
         );
         res.status(200).json(keysToCamel(npo));
     } catch (err) {
@@ -45,12 +45,12 @@ NPORouter.post('/', async (req, res) => {
 // PUT - updates existing NPO in table
 NPORouter.put('/:id', async(req, res) => {
     try {
-        const { npo_id } = req.params;
+        const { id } = req.params;
         const { name, description } = req.body;
         const npo = await db.query(
             `UPDATE npo_info SET name = COALESCE($1, name), description = COALESCE($2, description) 
             WHERE id = $3 RETURNING *;`, 
-            [name, description, npo_id]
+            [name, description, id]
         );
         res.status(200).json(keysToCamel(npo));
     } catch (err) {
@@ -61,10 +61,10 @@ NPORouter.put('/:id', async(req, res) => {
 // DELETE - deletes NPO from tables
 NPORouter.delete('/:id', async (req, res) => {
     try {
-        const { npo_id } = req.params;
+        const { id } = req.params;
         const npo = await db.query(
             `DELETE FROM npo_info WHERE id = $1 RETURNING *;`, 
-            [npo_id]
+            [id]
         );
         res.status(200).json(keysToCamel(npo));
     } catch (err) {

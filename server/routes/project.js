@@ -28,10 +28,10 @@ ProjectsRouter.get('/npo-projects', async (req, res) => {
 // GET - get project by id
 ProjectsRouter.get('/:id', async (req, res) => {
     try {
-        const { proj_id } = req.params;
+        const { id } = req.params;
         const project = await db.query(
             `SELECT * FROM eh_project_info WHERE id = $1;`, 
-            [proj_id]
+            [id]
         );
         res.status(200).json(keysToCamel(project));
     } catch (err) {
@@ -42,11 +42,11 @@ ProjectsRouter.get('/:id', async (req, res) => {
 // POST - insert new project in table
 ProjectsRouter.post('/', async (req, res) => {
     try {
-        const { npo_id, start_year, end_year, project_leads } = req.body;
+        const { npoId, startYear, endYear, projectLeads } = req.body;
         const project = await db.query(
             `INSERT INTO eh_project_info (npo_id, start_year, end_year, project_leads)
              VALUES ($1, $2, $3, $4) RETURNING id;`, 
-             [npo_id, start_year, end_year, project_leads]
+             [npoId, startYear, endYear, projectLeads]
         );
         res.status(201).json({status: 'Success', id: project[0].id});
     } catch (err) {
@@ -57,16 +57,16 @@ ProjectsRouter.post('/', async (req, res) => {
 // PUT - update existing project in table
 ProjectsRouter.put('/:id', async (req, res) => {
     try {
-        const { proj_id } = req.params;
-        const { npo_id, start_year, end_year, project_leads } = req.body;
+        const { id } = req.params;
+        const { npoId, startYear, endYear, projectLeads } = req.body;
         const project = await db.query(
             `UPDATE eh_project_info SET 
                 npo_id = COALESCE($1, npo_id),
                 start_year = COALESCE($2, start_year),
                 end_year = COALESCE($3, end_year),
                 project_leads = COALESCE($4, project_leads)
-            WHERE id = $5 RETURNING *;`
-            [npo_id, start_year, end_year, project_leads, proj_id]
+            WHERE id = $5 RETURNING *;`,
+            [npoId, startYear, endYear, projectLeads, id]
         );
         res.status(200).json(keysToCamel(project));
     } catch (err) {
@@ -77,12 +77,12 @@ ProjectsRouter.put('/:id', async (req, res) => {
 // DELETE - delete existing project from table
 ProjectsRouter.delete('/:id', async (req, res) => {
     try {
-        const { proj_id } = req.params;
+        const { id } = req.params;
         const project = await db.query(
             `DELETE FROM eh_project_info WHERE id = $1 RETURNING *;`,
-            [proj_id]
+            [id]
         );
-        res.status(200.).json(keysToCamel(project));
+        res.status(200).json(keysToCamel(project));
     } catch (err) {
         res.status(500).send(err.message);
     }
