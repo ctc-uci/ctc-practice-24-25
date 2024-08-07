@@ -29,7 +29,7 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 
 app.use(
     cors({
-        origin: CLIENT_HOSTNAME,
+        origin: "http://127.0.0.1:3000",
         credentials: true,
     })
 );

@@ -10,7 +10,7 @@ npoRouter.use(express.json());
 npoRouter.get("/", async (req, res) => {
     try {
         const allNpos = await db.query(
-            `SELECT npo.name, npo.description, bm.start_year, bm.end_year, bm.project_leads
+            `SELECT bm.npo_id, bm.id, npo.name, npo.description, bm.start_year, bm.end_year, bm.project_leads
             FROM bm_project_info AS bm
             INNER JOIN npo_info AS npo
             ON npo.id = bm.npo_id`
