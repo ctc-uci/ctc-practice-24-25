@@ -21,12 +21,19 @@ const SERVER_PORT =
         ? process.env.DEV_SERVER_PORT
         : process.env.PROD_SERVER_PORT) ?? 3001;
 
+
+console.log(process.env.DEV_CLIENT_HOSTNAME);
+console.log(process.env.DEV_CLIENT_PORT);
+console.log('SERVER_PORT:', SERVER_PORT);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 app.use(
     cors({
         origin: CLIENT_HOSTNAME,
         credentials: true,
     })
 );
+
 
 // app.use(cookieParser());
 

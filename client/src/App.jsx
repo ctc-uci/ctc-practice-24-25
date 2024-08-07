@@ -1,4 +1,7 @@
-import React from "react";
+// make get request include npo_id and id
+// make it so that the project leads are spaced out by commas
+
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Table,
@@ -21,12 +24,21 @@ const Backend = axios.create({
 });
 
 const App = () => {
-    const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const response = await Backend.get(`/npo`);
+            setData(response.data);
+            // console.log(data)
+        } catch (error) {
+            console.log("Error Fetchng Data:", error);
+        }
     };
 
-    getData();
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <Box
@@ -39,18 +51,27 @@ const App = () => {
 
             <TableContainer>
                 <Table variant="simple">
-                    <TableCaption>
-                        Imperial to metric conversion factors
-                    </TableCaption>
+                    <TableCaption>CTC NPO Information</TableCaption>
                     <Thead>
                         <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
+                            <Th>NPO Name</Th>
+                            <Th>NPO Description</Th>
+                            <Th isNumeric>START YEAR</Th>
+                            <Th isNumeric>END YEAR</Th>
+                            <Th>PROJECT LEADS</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
+                        {data.map((npo) => (
+                            <Tr key={npo.id}>
+                                <Td>{npo.name}</Td>
+                                <Td>{npo.description}</Td>
+                                <Td isNumeric>{npo.startYear}</Td>
+                                <Td isNumeric>{npo.endYear}</Td>
+                                <Td>{npo.projectLeads}</Td>
+                            </Tr>
+                        ))}
+                        {/* <Tr>
                             <Td>inches</Td>
                             <Td>millimetres (mm)</Td>
                             <Td isNumeric>25.4</Td>
@@ -64,15 +85,15 @@ const App = () => {
                             <Td>yards</Td>
                             <Td>metres (m)</Td>
                             <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        </Tr> */}
                     </Tbody>
-                    <Tfoot>
+                    {/* <Tfoot>
                         <Tr>
                             <Th>To convert</Th>
                             <Th>into</Th>
                             <Th isNumeric>multiply by</Th>
                         </Tr>
-                    </Tfoot>
+                    </Tfoot> */}
                 </Table>
             </TableContainer>
         </Box>
