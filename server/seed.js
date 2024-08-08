@@ -74,11 +74,11 @@ const PROJECT_INFO /*: ProjectInfo[] */ = [
 ];
 
 const db = pgp({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
+    host: process.env.DEV_DB_HOST,
+    user: process.env.DEV_DB_USER,
+    password: process.env.DEV_DB_PASSWORD,
+    port: process.env.DEV_DB_PORT,
+    database: process.env.DEV_DB_NAME,
     ssl: true,
 });
 
@@ -115,4 +115,4 @@ const seed = async (tableName) => {
     }
 };
 
-seed("FILL IN HERE");
+seed("sz_project_info");

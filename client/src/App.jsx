@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect, useState} from "react";
 import {
     Box,
     Table,
@@ -6,7 +6,6 @@ import {
     TableContainer,
     Tbody,
     Td,
-    Tfoot,
     Th,
     Thead,
     Tr,
@@ -21,12 +20,28 @@ const Backend = axios.create({
 });
 
 const App = () => {
-    const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
-    };
+    const [npoData, setNpoData] = useState([]);
 
-    getData();
+    useEffect(function() {
+      const getData = async () => {
+        const data = await Backend.get(`/npo-info`);
+        setNpoData(data.data)
+      };
+      getData();
+    }, [])
+
+    const setTableRows = () => {
+      return npoData.map((npoObject) => {
+        return (
+        <Tr key={npoObject.id}>
+            <Td>{npoObject.name}</Td>
+            <Td>{npoObject.description}</Td>
+            <Td>{npoObject.start_year}</Td>
+            <Td>{npoObject.end_year}</Td>
+            <Td>{npoObject.project_leads.join(" ")}</Td>
+        </Tr>)
+      })
+    }
 
     return (
         <Box
@@ -40,39 +55,27 @@ const App = () => {
             <TableContainer>
                 <Table variant="simple">
                     <TableCaption>
-                        Imperial to metric conversion factors
+                        CTC NPO Information
                     </TableCaption>
                     <Thead>
                         <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
+                            <Th>NPO NAME</Th>
+                            <Th>NPO DESCRIPTION</Th>
+                            <Th>START YEAR</Th>
+                            <Th>END YEAR</Th>
+                            <Th>PROJECT LEADS</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>inches</Td>
-                            <Td>millimetres (mm)</Td>
-                            <Td isNumeric>25.4</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>feet</Td>
-                            <Td>centimetres (cm)</Td>
-                            <Td isNumeric>30.48</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>yards</Td>
-                            <Td>metres (m)</Td>
-                            <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        {setTableRows()}
                     </Tbody>
-                    <Tfoot>
+                    {/* <Tfoot>
                         <Tr>
                             <Th>To convert</Th>
                             <Th>into</Th>
                             <Th isNumeric>multiply by</Th>
                         </Tr>
-                    </Tfoot>
+                    </Tfoot> */}
                 </Table>
             </TableContainer>
         </Box>
