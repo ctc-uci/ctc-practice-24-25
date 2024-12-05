@@ -1,10 +1,12 @@
 // FIXME: delete sample router file
 
 const express = require("express");
+const { db } = require('../server/db-pgp');
+const { keysToCamel } = require("../common/utils");
 
 const sampleRouter = express.Router();
 
-const { keysToCamel } = require("../common/utils");
+
 
 sampleRouter.use(express.json());
 
