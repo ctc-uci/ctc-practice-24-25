@@ -3,36 +3,14 @@
 const pgp = require("pg-promise")({});
 require("dotenv").config();
 
-const host =
-    process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_HOSTNAME
-        : process.env.PROD_DB_HOSTNAME;
-const user =
-    process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_USERNAME
-        : process.env.PROD_DB_USERNAME;
-const password =
-    process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_PASSWORD
-        : process.env.PROD_DB_PASSWORD;
-const database =
-    process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_NAME
-        : process.env.PROD_DB_NAME;
-const port =
-    process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_PORT
-        : process.env.PROB_DB_PORT;
-
 const db = pgp({
-    host,
-    user,
-    password,
-    database,
-    port,
-    ssl: {
-        rejectUnauthorized: false,
-    },
+    // NOTE: were using pgp to connect to the db here for some reason, different than the default code
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    ssl: true,
 });
 
-module.exports = { db, pgp };
+module.exports = db;
