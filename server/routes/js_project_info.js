@@ -1,8 +1,8 @@
 const express = require("express");
 
 const jsProjectInfoRouter = express.Router();
-
 const { keysToCamel } = require("../common/utils");
+const db = require("../server/db-pgp");
 
 jsProjectInfoRouter.use(express.json());
 
