@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import {
     Box,
     Table,
@@ -21,12 +22,22 @@ const Backend = axios.create({
 });
 
 const App = () => {
+    const [npoData, setNpoData] = useState([]); // NOTE: we store the queried data to use for the table later
+
     const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
+      try {
+        const response = await Backend.get(`/js_project_info/npo-info`);
+        console.log(response.data);
+
+        setNpoData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    getData();
+    useEffect(() => {
+      getData();
+    }, []);
 
     return (
         <Box
@@ -40,39 +51,28 @@ const App = () => {
             <TableContainer>
                 <Table variant="simple">
                     <TableCaption>
-                        Imperial to metric conversion factors
+                        CTC Project Data 2021-2024
                     </TableCaption>
                     <Thead>
                         <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
+                            <Th>NPO Name</Th>
+                            <Th>NPO Description</Th>
+                            <Th>Start Year</Th>
+                            <Th>End Year</Th>
+                            <Th>Project Leads</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>inches</Td>
-                            <Td>millimetres (mm)</Td>
-                            <Td isNumeric>25.4</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>feet</Td>
-                            <Td>centimetres (cm)</Td>
-                            <Td isNumeric>30.48</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>yards</Td>
-                            <Td>metres (m)</Td>
-                            <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        {npoData.map((npo) => (
+                          <Tr key={npo.id}>
+                              <Td>{npo.name}</Td>
+                              <Td>{npo.description}</Td>
+                              <Td isNumeric>{npo.startYear}</Td>
+                              <Td isNumeric>{npo.endYear}</Td>
+                              <Td>{npo.projectLeads.join(", ")}</Td>
+                          </Tr>
+                        ))}
                     </Tbody>
-                    <Tfoot>
-                        <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
-                        </Tr>
-                    </Tfoot>
                 </Table>
             </TableContainer>
         </Box>
