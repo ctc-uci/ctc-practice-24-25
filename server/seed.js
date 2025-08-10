@@ -115,4 +115,4 @@ const seed = async (tableName) => {
     }
 };
 
-seed("FILL IN HERE");
+seed("in_project_info");

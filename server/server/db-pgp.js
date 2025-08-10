@@ -5,31 +5,31 @@ require("dotenv").config();
 
 const host =
     process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_HOSTNAME
+        ? process.env.DB_HOST
         : process.env.PROD_DB_HOSTNAME;
 const user =
     process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_USERNAME
+        ? process.env.DB_USER
         : process.env.PROD_DB_USERNAME;
 const password =
     process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_PASSWORD
+        ? process.env.DB_PASSWORD
         : process.env.PROD_DB_PASSWORD;
 const database =
     process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_NAME
+        ? process.env.DB_NAME
         : process.env.PROD_DB_NAME;
 const port =
     process.env.NODE_ENV === "development"
-        ? process.env.DEV_DB_PORT
-        : process.env.PROB_DB_PORT;
+        ? Number(process.env.DB_PORT)
+        : process.env.PROD_DB_PORT;
 
 const db = pgp({
-    host,
-    user,
-    password,
-    database,
-    port,
+    host: host,
+    port: port,
+    database: database,
+    user: user,
+    password: password,
     ssl: {
         rejectUnauthorized: false,
     },
