@@ -6,6 +6,7 @@ require("dotenv").config();
 
 // Routes
 const sampleRouter = require("./routes/sample"); // FIXME: delete sample router
+const projectInfoRouter = require("./routes/projectInfo");
 
 schedule.scheduleJob("0 0 0 0 0", () => console.log("Hello Cron Job!")); // FIXME: delete sample cronjob
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 
 app.use(express.json()); // for req.body
 app.use("/", sampleRouter); // FIXME: delete sample endpoint
+app.use("/projectInfo", projectInfoRouter);
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server listening on ${SERVER_PORT}`);
