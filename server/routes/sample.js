@@ -1,6 +1,7 @@
 // FIXME: delete sample router file
 
 const express = require("express");
+const { db } = require("../server/db-pgp");
 
 const sampleRouter = express.Router();
 
@@ -11,7 +12,9 @@ sampleRouter.use(express.json());
 sampleRouter.get("/", async (req, res) => {
     try {
         // Query database
-        const data = {};
+        const data = await db.query(
+            "SELECT * FROM dl_project_info as pi INNER JOIN npo_info as ni ON pi.npo_id = ni.id"
+        );
 
         res.status(200).json(keysToCamel(data));
     } catch (err) {

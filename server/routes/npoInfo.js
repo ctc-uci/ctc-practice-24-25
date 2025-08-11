@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../server/db-pgp");
+const { db } = require("../server/db-pgp");
 
 const npoInfoRouter = express.Router();
 const { keysToCamel } = require("../common/utils");

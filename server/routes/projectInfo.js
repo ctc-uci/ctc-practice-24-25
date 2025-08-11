@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../server/db-pgp");
+const { db } = require("../server/db-pgp");
 
 const projectInfoRouter = express.Router();
 const { keysToCamel } = require("../common/utils");
@@ -9,7 +9,9 @@ projectInfoRouter.use(express.json());
 projectInfoRouter.get("/", async (req, res) => {
     try {
         // Query database
-        const data = await db.query("SELECT * FROM dl_project_info");
+        const data = await db.query(
+            "SELECT * FROM dl_project_info as pi INNER JOIN npo_info as ni ON pi.npo_id = ni.id"
+        );
 
         res.status(200).json(keysToCamel(data));
     } catch (err) {
