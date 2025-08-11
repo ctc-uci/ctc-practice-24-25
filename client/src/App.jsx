@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
     Box,
@@ -7,7 +7,6 @@ import {
     TableContainer,
     Tbody,
     Td,
-    Tfoot,
     Th,
     Thead,
     Tr,
@@ -15,6 +14,8 @@ import {
 import axios from "axios";
 
 import IntroMessage from "./components/IntroMessage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { VolunteerTable } from "./volunteerTable";
 
 const Backend = axios.create({
     baseURL: "http://localhost:3001",
@@ -39,7 +40,7 @@ const App = () => {
       getData();
     }, []);
 
-    return (
+    const NPOContent = () => (
         <Box
             display={"flex"}
             flexDirection={"column"}
@@ -76,6 +77,27 @@ const App = () => {
                 </Table>
             </TableContainer>
         </Box>
+    );
+
+    const VolunteerContent = () => (
+        <Box
+            display={"flex"}
+            flexDirection={"column"}
+            maxWidth={1400}
+            marginX={"auto"}
+        >
+            <IntroMessage />
+            <VolunteerTable />
+        </Box>
+    );
+
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<NPOContent />} />
+                <Route path="/volunteers" element={<VolunteerContent />} />
+            </Routes>
+        </Router>
     );
 };
 
