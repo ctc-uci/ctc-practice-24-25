@@ -22,7 +22,7 @@ const Backend = axios.create({
 const App = () => {
     const [data, setData] = useState([]);
     const getData = async () => {
-        const data = await Backend.get(`/projectInfo`);
+        const data = await Backend.get(`/`);
         setData(data.data)
         console.log(data.data);
     };
