@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 export function VolunteerTable(){
     // Pretend this is pulled data from the database
-    const [volunteers, setVolunteers] = useState(null)
-    
+    const [volunteers, setVolunteers] = useState([])
+
     useEffect(() => {
         setVolunteers([
             {
@@ -74,20 +74,20 @@ export function VolunteerTable(){
                     ))}
                 </tbody>
             </table>
-            
+
             <style>{`
                 .volunteer-table-container {
                     padding: 20px;
                     max-width: 1200px;
                     margin: 0 auto;
                 }
-                
+
                 h2 {
                     color: #333;
                     margin-bottom: 20px;
                     text-align: center;
                 }
-                
+
                 .volunteer-table {
                     width: 100%;
                     border-collapse: collapse;
@@ -96,7 +96,7 @@ export function VolunteerTable(){
                     overflow: hidden;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 }
-                
+
                 .volunteer-table th {
                     background: #4a90e2;
                     color: white;
@@ -105,17 +105,17 @@ export function VolunteerTable(){
                     font-weight: 600;
                     font-size: 14px;
                 }
-                
+
                 .volunteer-table td {
                     padding: 15px;
                     border-bottom: 1px solid #eee;
                     font-size: 14px;
                 }
-                
+
                 .volunteer-table tr:hover {
                     background-color: #f8f9fa;
                 }
-                
+
                 .volunteer-table tr:last-child td {
                     border-bottom: none;
                 }
