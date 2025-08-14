@@ -22,7 +22,7 @@ const database =
 const port =
     process.env.NODE_ENV === "development"
         ? process.env.DEV_DB_PORT
-        : process.env.PROB_DB_PORT;
+        : process.env.PROD_DB_PORT;
 
 const db = pgp({
     host,

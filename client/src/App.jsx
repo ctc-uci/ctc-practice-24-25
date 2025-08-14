@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
     Box,
     Table,
@@ -6,7 +6,6 @@ import {
     TableContainer,
     Tbody,
     Td,
-    Tfoot,
     Th,
     Thead,
     Tr,
@@ -21,12 +20,19 @@ const Backend = axios.create({
 });
 
 const App = () => {
+    const [npoData, setNpoData] = useState();
+    const [isLoaded, setIsLoaded] = useState();
+
     const getData = async () => {
-        const data = await Backend.get(`/`);
-        console.log(data);
+        const allNpoInfo = await Backend.get(`projectInfo/allProjectData`);
+        console.log(allNpoInfo.data);
+        setNpoData(allNpoInfo.data);
+        setIsLoaded(true);
     };
 
-    getData();
+    useEffect(() => {
+        !isLoaded && getData();
+    }, [isLoaded]);
 
     return (
         <Box
@@ -39,40 +45,30 @@ const App = () => {
 
             <TableContainer>
                 <Table variant="simple">
-                    <TableCaption>
-                        Imperial to metric conversion factors
-                    </TableCaption>
+                    <TableCaption>CTC NPO Information</TableCaption>
                     <Thead>
                         <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
+                            <Th>NPO NAME</Th>
+                            <Th>NPO DESCRIPTION</Th>
+                            <Th isNumeric>START YEAR</Th>
+                            <Th isNumeric>END YEAR</Th>
+                            <Th>PROJECT LEADS</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>inches</Td>
-                            <Td>millimetres (mm)</Td>
-                            <Td isNumeric>25.4</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>feet</Td>
-                            <Td>centimetres (cm)</Td>
-                            <Td isNumeric>30.48</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>yards</Td>
-                            <Td>metres (m)</Td>
-                            <Td isNumeric>0.91444</Td>
-                        </Tr>
+                        {npoData &&
+                            npoData.map((npo) => {
+                                return (
+                                    <Tr key={npo.id}>
+                                        <Td>{npo.npoName}</Td>
+                                        <Td>{npo.description}</Td>
+                                        <Td>{npo.startYear}</Td>
+                                        <Td>{npo.endYear}</Td>
+                                        <Td>{npo.leadName}</Td>
+                                    </Tr>
+                                );
+                            })}
                     </Tbody>
-                    <Tfoot>
-                        <Tr>
-                            <Th>To convert</Th>
-                            <Th>into</Th>
-                            <Th isNumeric>multiply by</Th>
-                        </Tr>
-                    </Tfoot>
                 </Table>
             </TableContainer>
         </Box>
